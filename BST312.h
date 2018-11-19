@@ -247,7 +247,11 @@ void BST_312 <ItemType>::deleteItem(const ItemType& newItem)
 template<class ItemType>
 void BST_312 <ItemType>::makeEmpty(TreeNode*& t)
 {
-    //YOUR CODE GOES HERE
+    if (t == NULL) return;
+    makeEmpty(t->left);
+    makeEmpty(t->right);
+    delete t;
+    return;
 }
 
 template<class ItemType>
@@ -285,15 +289,44 @@ bool BST_312 <ItemType>::isFull() const
 template<class ItemType>
 void BST_312 <ItemType>::insertItem(TreeNode*& t, const ItemType& newItem)
 {
-
-    //YOUR CODE GOES HERE
-
+    if (newItem > t->data) {
+        if (t->right == NULL) {
+            TreeNode* t2 = new TreeNode;
+            t2->left = NULL;
+            t2 -> right = NULL;
+            t2->data = newItem;
+            t->right = t2;
+            return;
+        } else {
+            insertItem(t->right, newItem);
+        }
+    } else {
+        if (t->left == NULL) {
+            TreeNode* t2 = new TreeNode;
+            t2->left = NULL;
+            t2->right = NULL;
+            t2->data = newItem;
+            t->left = t2;
+            return;
+        } else {
+            insertItem(t->left, newItem);
+        }
+    }
+    return ;
 }
 
 template<class ItemType>
 void BST_312 <ItemType>::insertItem(const ItemType& newItem)
 {
-    //YOUR CODE GOES HERE
+    if (root == NULL) {
+        root = new TreeNode;
+        root->left = NULL;
+        root->right = NULL;
+        root->data = newItem;
+        return;
+    } else {
+        insertItem(root, newItem);
+    }
 }
 
 
@@ -301,7 +334,8 @@ void BST_312 <ItemType>::insertItem(const ItemType& newItem)
 template<class ItemType>
 int BST_312 <ItemType>::countNodes(TreeNode* t) const
 {
-    //YOUR CODE GOES HERE
+    if (t == NULL) return 0;
+    return countNodes(t->left) + countNodes(t->right) + 1;
 
 }
 
@@ -309,54 +343,84 @@ int BST_312 <ItemType>::countNodes(TreeNode* t) const
 template<class ItemType>
 int BST_312 <ItemType>::countNodes()
 {
-    //YOUR CODE GOES HERE
+    if (root == NULL) return 0;
+    TreeNode* t = root;
+    return countNodes(t->left) + countNodes(t->right) + 1;
 }
 
 template<class ItemType>
 void BST_312 <ItemType>::preOrderTraversal(TreeNode* t,vector<ItemType>& result) const
 {
-    //YOUR CODE GOES HERE
+    if (t == NULL) return;
+    preOrderTraversal(t->left, result);
+    result.push_back(t->data);
+    preOrderTraversal(t->right, result);
 }
 
 
 template<class ItemType>
 vector<ItemType> BST_312 <ItemType>::preOrderTraversal()
 {
-    //YOUR CODE GOES HERE
-
+    if (root == NULL) {
+        return vector<ItemType>();
+    }   else {
+        vector<ItemType> res;
+        preOrderTraversal(root, res);
+        return res;
+    }
 }
 
 template<class ItemType>
 void BST_312 <ItemType>::inOrderTraversal(TreeNode* t,vector<ItemType>& result) const
 {
-    //YOUR CODE GOES HERE
-
+    if (t == NULL) return;
+    result.push_back(t->data);
+    inOrderTraversal(t->left, result);
+    inOrderTraversal(t->right, result);
 }
 
 template<class ItemType>
 vector<ItemType> BST_312 <ItemType>::inOrderTraversal()
 {
-    //YOUR CODE GOES HERE
+    if (root == NULL) {
+        return vector<ItemType>();
+    }   else {
+        vector<ItemType> res;
+        inOrderTraversal(root, res);
+        return res;
+    }
 }
 
 template<class ItemType>
 void BST_312 <ItemType>::postOrderTraversal(TreeNode* t,vector<ItemType>& result) const
 {
-
-    //YOUR CODE GOES HERE
+    if (t == NULL) return;
+    inOrderTraversal(t->left, result);
+    inOrderTraversal(t->right, result);
+    result.push_back(t->data);
 }
 
 template<class ItemType>
 vector<ItemType> BST_312 <ItemType>::postOrderTraversal()
 {
-    //YOUR CODE GOES HERE
+    if (root == NULL) {
+        return vector<ItemType>();
+    }   else {
+        vector<ItemType> res;
+        postOrderTraversal(root, res);
+        return res;
+    }
 }
 
 template<class ItemType>
 bool BST_312 <ItemType>::isItemInTree(const ItemType& item)
 {
-
-  //YOUR CODE GOES HERE
-
+    TreeNode* t = root;
+    while (t != NULL) {
+        if (item == t->data) return true;
+        else if (item > t->data) t = t->right;
+        else if (item < t->data) t = t->left;
+    }
+    return false;
 }
 #endif
