@@ -5,6 +5,8 @@
         "vector": "cpp",
         "__locale": "cpp",
         "iosfwd": "cpp",
-        "iterator": "cpp"
+        "iterator": "cpp",
+        "ios": "cpp",
+        "iostream": "cpp"
     }
 }
